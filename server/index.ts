@@ -1,5 +1,3 @@
-const { Server } = require('socket.io')
-
-
+const socket = require('socket.io')
 
 console.log("Hello ts");
