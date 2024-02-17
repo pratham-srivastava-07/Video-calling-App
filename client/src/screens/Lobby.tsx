@@ -4,7 +4,9 @@ import React from 'react'
 const Lobby = () => {
     return (
         <>
-        Lobby
+        <div className="container text-4xl">
+            Lobby
+        </div>
         </>
     )
 }
