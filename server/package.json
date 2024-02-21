@@ -15,10 +15,12 @@
     "mime-types": "^2.1.35",
     "ms": "^2.1.2",
     "negotiator": "^0.6.3",
+    "nodemon": "^3.0.3",
     "object-assign": "^4.1.1",
     "socket.io": "^4.7.4",
     "socket.io-adapter": "^2.5.2",
     "socket.io-parser": "^4.2.4",
+    "ts-node": "^10.9.2",
     "undici-types": "^5.26.5",
     "vary": "^1.1.2",
     "ws": "^8.11.0"
@@ -27,7 +29,7 @@
     "@types/node": "^20.11.19"
   },
   "scripts": {
-    "start": "node index.ts"
+    "start": "nodemon index.ts "
   },
   "keywords": [],
   "author": "",
