@@ -1,21 +1,29 @@
 import { useState, useCallback, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useSocket } from '../context/SocketProvider'
 
 const Lobby = () => {
     const socket = useSocket()
     const [email, setEmail] = useState('')
     const [room, setRoom] = useState('')
+    const navigate = useNavigate()
     const handleSubmit = useCallback((e: any)=> {
         e.preventDefault();
         socket?.emit('room:join', {email, room})
         
     },[email, room, socket])
 
+    const handleUsers = useCallback((data: any)=> {
+        const {email, room} = data
+        navigate(`/room/${room}`)
+    },[navigate])
+
     useEffect(()=> {
-        socket?.on('room:join', (data: any)=> {
-            console.log(data);
-        })
-    },[socket])
+        socket?.on('room:join', handleUsers)
+        return () => {
+            socket?.off('room:joined')
+        }
+    },[socket, handleUsers])
 
     return (
         <>
