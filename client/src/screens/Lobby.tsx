@@ -21,7 +21,7 @@ const Lobby = () => {
     useEffect(()=> {
         socket?.on('room:join', handleUsers)
         return () => {
-            socket?.off('room:joined')
+            socket?.off('room:join',handleUsers) // deregister the event
         }
     },[socket, handleUsers])
 

@@ -22,4 +22,3 @@ io.on("connection", (socket: any)=> {
 })
 
 
-// req-> middleware-> res
