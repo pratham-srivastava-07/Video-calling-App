@@ -13,9 +13,9 @@ io.on("connection", (socket: any)=> {
         const {email, room} = data;
         emailToSocket.set(email, socket.id);
         socketIdtoEmail.set(socket.id, email);
-        io.to(room).emit('user:joined', {email, id: socket.id}) // agar pehle se koi hai to usse user joined pata chal jaega
-        socket.join(room)
-       io.to(socket.id).emit('room:join', data)
+       io.to(socket.id).emit('room:join', data) // for first user
+       io.to(room).emit('user:joined', {email, id: socket.id}) // agar pehle se koi hai to usse user joined  event pata chal jaega
+       socket.join(room)
     })
    
     
