@@ -1,6 +1,7 @@
 import { useSocket } from "../context/SocketProvider"
 import { useCallback, useEffect, useState } from "react"
 import ReactPlayer from "react-player"
+import {getOffer} from "../service/peer"
 
 
 const Room = () => {
@@ -40,7 +41,9 @@ const Room = () => {
    {socketId && <button onClick={handleCall} className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">
   CALL
 </button>}
-    {myStream && <ReactPlayer playing muted width={200} height={200} url={myStream}/>}
+   </div>
+   <div className="streamContainer flex justify-center items-center mt-5">
+   {myStream && <ReactPlayer playing muted width={200} height={200} url={myStream}/>}
    </div>
    </div>
   )
