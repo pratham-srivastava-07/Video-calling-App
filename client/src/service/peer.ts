@@ -13,13 +13,16 @@ class Service {
             ]
         });
     }
+
+
+    async getOffer(this: { peer: RTCPeerConnection | null }) {
+        if(this.peer){
+         const offer = await this.peer.createOffer();
+         await this.peer.setLocalDescription(new RTCSessionDescription(offer));
+         return offer;
+        }
+     }
 }
 
-async function getOffer(this: { peer: RTCPeerConnection | null }) {
-   if(this.peer){
-    const offer = await this.peer.createOffer();
-    await this.peer.setLocalDescription(new RTCSessionDescription(offer));
-    return offer;
-   }
-}
-export {Service, getOffer} 
+
+export default new Service()
