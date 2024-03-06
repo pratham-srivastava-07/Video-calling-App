@@ -20,6 +20,9 @@ io.on("connection", (socket: any)=> {
    socket.on("call:user", ({to, offer}: {to: any,  offer: any})=>{
     io.to(to).emit("incoming:call", {from: socket.id, offer})
    })
+   socket.on("answer:call", ({to, ans}: {to: any,  ans: any})=>{
+    io.to(to).emit("ans:call", {from: socket.id, ans})
+   })
     
 })
 

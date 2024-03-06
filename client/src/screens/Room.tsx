@@ -25,19 +25,33 @@ const Room = () => {
     return stream;
   },[socketId,myStream])
 
-  const handleIncomingCall = useCallback(({from, offer}: {from: any, offer: any})=> {
+  const handleIncomingCall = useCallback( async ({from, offer}: {from: any, offer: any})=> {
+    setSocketId(from)
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true
+    });
+    setMyStream(stream)
     console.log(`Incoming Call`, from, offer)
-  }, [])
+    const ans = await peer.getAnswer(offer)
+    socket?.emit("answer:call", {to: from, ans})
+  }, [socket, socketId])
  
+  const handleAnswerCall = useCallback(({from, ans}: {from: any, ans: any})=> {
+    peer.setDescription(ans)
+    console.log(`Call accepted`, from, ans)
+  }, [])
 
     useEffect(()=> {
         socket?.on('user:joined', handleJoinedUsers)
         socket?.on("incoming:call", handleIncomingCall)
+        socket?.on("ans:call", handleAnswerCall)
         return ()=> {
           socket?.off('user:joined', handleJoinedUsers)
           socket?.on("incoming:call", handleIncomingCall)
+          socket?.on("ans:call", handleAnswerCall)
         }
-    }, [socket, handleJoinedUsers])
+    }, [socket, handleIncomingCall,handleAnswerCall, handleJoinedUsers])
   return (
    <div>
      <div className="flex justify-center">
