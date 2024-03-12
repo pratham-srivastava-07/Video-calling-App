@@ -35,7 +35,7 @@ const Room = () => {
     console.log(`Incoming Call`, from, offer)
     const ans = await peer.getAnswer(offer)
     socket?.emit("answer:call", {to: from, ans})
-  }, [socket, socketId])
+  }, [socket])
  
   const handleAnswerCall = useCallback(({from, ans}: {from: any, ans: any})=> {
     peer.setDescription(ans)
