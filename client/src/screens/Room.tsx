@@ -8,6 +8,7 @@ import peer from "../service/peer"
 const Room = () => {
   const [socketId, setSocketId] = useState(null)
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
+  const [remoteStream, setRemoteStream] =useState<MediaStream>();
     const socket = useSocket()
     const handleJoinedUsers = useCallback(({email, id}: {email: any, id: any})=> {
       console.log(`${email} joined the room`);
@@ -35,12 +36,23 @@ const Room = () => {
     console.log(`Incoming Call`, from, offer)
     const ans = await peer.getAnswer(offer)
     socket?.emit("answer:call", {to: from, ans})
-  }, [socket])
+  },[socket]);
  
   const handleAnswerCall = useCallback(({from, ans}: {from: any, ans: any})=> {
     peer.setDescription(ans)
     console.log(`Call accepted`, from, ans)
+    if(myStream) {
+      for(const track of myStream.getTracks()) {
+        peer.peer.addTrack(track, myStream)
+      }
+    }
   }, [])
+  useEffect(()=> {
+     peer.peer.addEventListener('track', async ev => {
+      const remoteStream = ev.streams[0];
+      setRemoteStream(remoteStream)
+     })
+    },[])
 
     useEffect(()=> {
         socket?.on('user:joined', handleJoinedUsers)
@@ -48,8 +60,8 @@ const Room = () => {
         socket?.on("ans:call", handleAnswerCall)
         return ()=> {
           socket?.off('user:joined', handleJoinedUsers)
-          socket?.on("incoming:call", handleIncomingCall)
-          socket?.on("ans:call", handleAnswerCall)
+          socket?.off("incoming:call", handleIncomingCall)
+          socket?.off("ans:call", handleAnswerCall)
         }
     }, [socket, handleIncomingCall,handleAnswerCall, handleJoinedUsers])
   return (
@@ -67,6 +79,7 @@ const Room = () => {
    </div>
    <div className="streamContainer flex justify-center items-center mt-5">
    {myStream && <ReactPlayer playing muted width={200} height={200} url={myStream}/>}
+   {remoteStream && <ReactPlayer playing muted width={200} height={200} url={remoteStream}/>}
    </div>
    </div>
   )
