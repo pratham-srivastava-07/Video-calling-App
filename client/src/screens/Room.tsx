@@ -78,7 +78,7 @@ const Room = () => {
 </button>}
    </div>
    <div className="streamContainer flex justify-center items-center mt-5">
-   {myStream && <ReactPlayer playing muted width={200} height={200} url={myStream}/>}
+   {myStream && <ReactPlayer playing muted width={600} height={600} url={myStream}/>}
    {remoteStream && <ReactPlayer playing muted width={200} height={200} url={remoteStream}/>}
    </div>
    </div>
